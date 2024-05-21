@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results</title>
+  <style>
+    /* CSS styles for the search results */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff; /* white background */
+      margin: 0;
+      padding: 20px;
+      color: #000; /* black text */
+    }
+
+    .navbar {
+      background-color: #333; /* black background */
+      color: #fff; /* white text */
+      padding: 10px;
+      text-align: center;
+    }
+
+    .navbar a {
+      color: #fff; /* white text */
+      text-decoration: none;
+      margin: 0 20px;
+    }
+
+    .navbar a:hover {
+      background-color: #555; /* darker shade of black on hover */
+    }
+
+    .search-results {
+      margin-top: 20px;
+    }
+
+    .product-list {
+      list-style: none;
+      padding: 0;
+      display: flex; /* Set display to flex to arrange items horizontally */
+      flex-wrap: wrap; /* Allow items to wrap to the next line if needed */
+    }
+
+    .product-item {
+      margin-right: 20px; /* Adjust spacing between products */
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      flex: 0 0 calc(33.33% - 20px); /* Set width for each product */
+      /* Adjust the width percentage as needed based on the number of items to display */
+      /* In this case, 3 items per row */
+      margin-bottom: 20px;
+    }
+
+    .product-details {
+      margin-bottom: 10px;
+    }
+
+    .add-to-cart {
+      background-color: #000; /* black background */
+      color: #fff; /* white text */
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: block;
+      width: 100%; /* Make button full width inside product item */
+    }
+
+    .add-to-cart:hover {
+      background-color: #333; /* darker shade of black on hover */
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 20px;
+      color: #000; /* black text */
+      text-decoration:none;
+    }
+ 
+    .no-results {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="{% url 'index' %}">Home</a>
+  </div>
+  {% if products %}
+    <div class="search-results">
+      <h2>Search Results for "{{ query }}"</h2>
+      <ul class="product-list">
+        {% for product in products %}
+          <li class="product-item">
+            <div class="product-details">
+              <h3>{{ product.name }}</h3>
+              <img src="{{ product.image.url }}" alt="{{ product.name }} Image">
+              <p>Description: {{ product.description }}</p>
+              <p>Price: {{ product.price }}</p>
+              <!-- Display other product details as needed -->
+            </div>
+            <!-- Add to Cart button -->
+            <form method="post" action="{% url 'add_to_cart' product.id %}">
+              {% csrf_token %}
+              <button type="submit" class="add-to-cart">Add to Cart</button>
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+      <!-- Link back to the main page -->
+    </div>
+  {% else %}
+    <div class="no-results">
+      <p>No products found for "{{ query }}".</p>
+      <!-- Link back to the main page -->  
+    </div>
+  {% endif %}
+</body>
+</html>

@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Product Page</title>
+    <style>
+        /* Center content */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            background-color: #060b11;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Navbar styles */
+        nav {
+            background-color: #01050a;
+            padding: 10px;
+            width: 100%;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav li {
+            margin: 0 10px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Restyle grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Restyle product card */
+        .product {
+            text-align: center;
+            border: 2px solid #ccc;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            width: 300px; /* Adjust as needed */
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            max-height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+
+        .product .title {
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .product .description {
+            font-size: 14px;
+            margin: 10px 0;
+            color: #444;
+        }
+
+        .product .price {
+            font-size: 16px;
+            color: #007bff;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .product .add-to-cart {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            background-color: #6c8096;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .product .wishlist {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            background-color: #28a745;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .product .add-to-cart:hover {
+            background-color: #0056b3;
+        }
+
+        .product .wishlist:hover {
+            background-color: #214f88;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <!-- Your header content -->
+    </div>
+
+    <!-- Navbar -->
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+        </ul>
+    </nav>
+
+    <h1>PRODUCT VIEW</h1>
+
+    <div class="grid-container">
+        <!-- Display product -->
+        <div class="product" style="border: 2px solid #ccc; padding: 20px; background-color: #f9f9f9; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; width: 300px;">
+            <a href="/product/{{product.id}}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: auto; max-height: 200px; object-fit: cover; border-bottom: 1px solid #eee; margin-bottom: 15px;">
+            </a>
+            <div class="title" style="font-size: 18px; margin-top: 10px; font-weight: bold;">{{ product.name }}</div>
+            <div class="description" style="font-size: 14px; margin: 10px 0; color: #444;">{{ product.description }}</div>
+            <div class="price" style="font-size: 16px; color: #007bff; margin-top: 5px; font-weight: bold;">Rs.{{ product.price }}</div>
+            <div class="material" style="font-size: 14px; margin: 10px 0; color: #444;">Material: {{ product.material }}</div>
+            <div class="brand" style="font-size: 14px; margin: 10px 0; color: #444;">Brand: {{ product.brand }}</div>
+            <div class="Size" style="font-size: 14px; margin: 10px 0; color: #444;">
+                Size:
+                <select name="size" id="size">
+                    <option value="S">S</option>
+                    <option value="m">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">xL</option>
+                    <option value="L">L</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+            
+        
+            
+    
+            <form action="{% url 'add_to_cart' product.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="add-to-cart" style="display: inline-block; margin-top: 15px; text-decoration: none; background-color: #0b7df7; color: white; padding: 8px 12px; border-radius: 4px; transition: background-color 0.3s;">Add to cart</button>
+            </form>
+            <a href="{% url 'add_to_wishlist' product.id %}" class="wishlist" style="display: inline-block; margin-top: 15px; text-decoration: none; background-color: #00fc97; color: white; padding: 8px 12px; border-radius: 4px; transition: background-color 0.3s;">Wishlist</a>
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #fff; /* white background */
+            color: #000; /* black text */
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #1f74be; /* black background */
+            color: #fff; /* white text */
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .quantity-container {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center; /* Align items vertically in the center */
+        }
+        .quantity-container li {
+            margin-right: 10px; /* Adjust spacing between elements */
+        }
+        .quantity-btn, .delete-btn {
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            color: #fff; /* white text */
+        }
+        .quantity-btn {
+            background-color: #02040d; /* black background */
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        img {
+            max-width: 80px;
+            height: auto;
+            display: block;
+            margin: auto;
+        }
+        .total-row {
+            font-weight: bold;
+        }
+        .navbar {
+            background-color: #000; /* black background */
+            color: #fff; /* white text */
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .navbar a {
+            color: #fff; /* white text */
+            text-decoration: none;
+            margin: 0 20px;
+        }
+        .navbar a:hover {
+            background-color: #333; /* darker shade of black on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{% url 'index' %}">Home</a> <!-- Link to the home page -->
+    </div>
+    <h1>Your Cart</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, item in cart_items.items %}
+            <tr>
+                <td><img src="{{ item.image.url }}" alt="{{ item.name }}"></td>
+                <td>{{ item.name }}</td>
+                <td>${{ item.price }}</td>
+                <td>
+                    <ul class="quantity-container">
+                        <li>
+                            <form action="{% url 'add_to_cart' item.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="quantity-btn">+</button>
+                            </form>
+                        </li>
+                        <li>{{ item.quantity }}</li>
+                        <li><a href="{% url 'decrease_quantity' item.id %}"><button class="quantity-btn">-</button></a></li>
+                    </ul>
+                </td>
+                <td>${{ item.total_price }}</td>
+                <td><a href="{% url 'remove_from_cart' item.id %}" class="delete-btn">Delete</a></td>
+            </tr>
+            {% endfor %}
+            <tr class="total-row">
+                <td colspan="4" align="right">Total:</td>
+                <td>${{ total_price }}</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="{% url 'checkout' %}" class="delete-btn">Check out</a>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Detail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            color: #333; /* Text color */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff; /* Heading color */
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2; /* Alternate row color */
+        }
+
+        tbody tr:hover {
+            background-color: #ddd; /* Hover row color */
+        }
+
+        .navbar {
+            background-color: #01070c; /* Navbar background color */
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .navbar a {
+            color: #cfcedb; /* Navbar link color */
+            text-decoration: none;
+            margin: 0 20px; /* Navbar link margin */
+        }
+
+        .navbar a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{% url 'index' %}">Home</a> <!-- Home navbar option -->
+    </div>
+
+    <h1>Order Detail</h1>
+    {% if request.user.is_superuser %}
+    <p><strong>Order ID:</strong> {{ order.id }}</p>
+    {% endif %}
+    <p><strong>Full Name:</strong> {{ order.fullname }}</p>
+    <p><strong>Address:</strong> {{ order.address }}, {{ order.city }}, {{ order.postal_code }}</p>
+    <p><strong>Total Amount:</strong> ${{ order.total_amount }}</p>
+    <p><strong>Status:</strong> {{ order.get_status_display }}</p>
+    
+    <h2>Order Items</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

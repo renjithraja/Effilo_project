@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Product Page</title>
+  <style>
+    
+    
+
+    /* Style the order summary container */
+    .order-summary {
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Style the order details */
+    .order-details {
+      margin-bottom: 20px;
+    }
+
+    /* Style the total amount */
+    .total-amount {
+      font-weight: bold;
+    }
+
+    .back-to-main {
+      display: block;
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: bold;
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    .back-to-main:hover {
+      text-decoration: underline;
+    }
+  </style>
+ 
+ <div class="order-summary">
+    <center><h2>Invoice</h2></center>
+    <div class="order-details">
+      <p>Full Name: {{ fullname }}</p>
+      <p>Address: {{ address }}</p>
+      <p>City: {{ city }}</p>
+      <p>Postal Code: {{ postal_code }}</p>
+   
+    </div>
+    <div class="product-details">
+      <h3>Product Details</h3>
+      {% for iteam in cart_products %}
+      <p>{{ iteam.product }} - Quantity: {{iteam.quantity }}</p>
+ 
+ 
+{% endfor %}
+    </div>
+    <p>Total Amount: Rs.{{ total_amount }}</p>
+    <button onclick="window.print()">Download Invoice</button>
+    <a href="{% url 'index' %}" class="back-to-main">Continue</a>
+  </div>
+</html>

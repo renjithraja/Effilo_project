@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Profile</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Add your inline CSS styles here */
+    .form-container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #d2d0d0;
+      border-radius: 10px;
+      background-color: #525050;
+    }
+    .password-toggle {
+      cursor: pointer;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      color: #6c757d;
+    }
+    .form-group {
+      position: relative;
+    }
+    /* Customize other styles as needed */
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="id_username">Username</label>
+          {{ form.username }}
+        </div>
+        <div class="form-group">
+          <label for="id_first_name">First Name</label>
+          {{ form.first_name }}
+        </div>
+        <!-- Add other form fields as needed -->
+
+        <h3>Change Password</h3>
+        <div class="form-group">
+          <label for="id_old_password">Old Password</label>
+          {{ password_form.old_password }}
+          <span class="password-toggle" onclick="togglePasswordVisibility('id_old_password')">
+            <i class="fas fa-eye"></i>
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="id_new_password1">New Password</label>
+          {{ password_form.new_password1 }}
+          <span class="password-toggle" onclick="togglePasswordVisibility('id_new_password1')">
+            <i class="fas fa-eye"></i>
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="id_new_password2">Confirm New Password</label>
+          {{ password_form.new_password2 }}
+          <span class="password-toggle" onclick="togglePasswordVisibility('id_new_password2')">
+            <i class="fas fa-eye"></i>
+          </span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and dependencies (if needed) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    function togglePasswordVisibility(fieldId) {
+      var field = document.getElementById(fieldId);
+      var icon = field.nextElementSibling.querySelector('i');
+      if (field.type === "password") {
+        field.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        field.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    }
+  </script>
+</body>
+</html>
